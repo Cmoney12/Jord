@@ -1,12 +1,9 @@
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -21,6 +18,8 @@ import java.util.logging.Logger;
 public class Word extends Application {
 
     TextArea textArea;
+    Font x;
+    public Spinner<Integer> spinner;
 
     public void start(Stage primaryStage) {
 
@@ -36,6 +35,26 @@ public class Word extends Application {
 
         menu.getItems().add(menuItem1);
         menu.getItems().add(menuItem2);
+
+        Menu menu3 = new Menu("FontSize");
+
+        //Slider slider = new Slider(0, 100, 50);
+        spinner = new Spinner(0, 100, 12);
+
+        CustomMenuItem customMenuItem = new CustomMenuItem();
+        customMenuItem.setContent(spinner);
+        customMenuItem.setHideOnClick(false);
+        menu3.getItems().add(customMenuItem);
+
+        Button button = new Button("Change Font Size");
+        CustomMenuItem customMenuItem2 = new CustomMenuItem();
+        customMenuItem2.setContent(button);
+        customMenuItem2.setHideOnClick(false);
+        menu3.getItems().add(customMenuItem2);
+
+        customMenuItem2.setOnAction(this::changeSize);
+
+
         Menu menu1 =  new Menu("File");
 
         MenuItem menuSaveAs = new MenuItem("Save As");
@@ -56,14 +75,14 @@ public class Word extends Application {
         });
         menu1.getItems().add(menuSaveAs);
 
-
-
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().add(menu);
         menuBar.getMenus().add(menu1);
+        menuBar.getMenus().add(menu3);
 
         VBox vb = new VBox(menuBar, textArea);
         primaryStage.setTitle("JORD");
+       
         Scene scene = new Scene(vb, 500, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -83,6 +102,9 @@ public class Word extends Application {
             Logger.getLogger(Word.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-
+    }
+    public void changeSize(ActionEvent event) {
+        Spinner<Integer> mySpinner = (Spinner<Integer>) spinner;
+        textArea.setFont(Font.font(mySpinner.getValue()));
     }
 }
